@@ -9,3 +9,5 @@
               w /|
                | \
               m  m
+
+build: cargo build

@@ -28,8 +28,9 @@ fn print_box(quote: String, line_width: usize) {
     }
 
     let cage = String::from("-").repeat(line_width+2);
+    println!("/{}\\", cage);
 
-    for i in 0..(quote.len() / line_width) {
+    for i in 0..(quote.len() / line_width + 1) {
         let mut start = i * line_width - offset;
         let mut end = cmp::min((i + 1) * line_width, quote.len() - 1) - offset;
         let mut pad = String::from("");
@@ -45,12 +46,13 @@ fn print_box(quote: String, line_width: usize) {
             start += 1;
         }
         if end - start < line_width {
-            let n_repeat = line_width * (i+1) - end + 1;
+            let n_repeat = start + line_width - end + 1;
             pad = String::from(" ").repeat(n_repeat);
         }
         let sub_quote = &quote[start..end];
         println!("| {}{} |", sub_quote, pad);
     }
+
     println!("\\{}/", cage);
 }
 
