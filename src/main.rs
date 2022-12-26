@@ -14,7 +14,6 @@ struct Args {
 }
 
 fn print_box(quote: String, line_width: usize) {
-    let mut offset = 0;
     let quote_bytes = quote.as_bytes();
 
     if quote.len() == 0 { return ; }
@@ -30,9 +29,14 @@ fn print_box(quote: String, line_width: usize) {
     let cage = String::from("-").repeat(line_width+2);
     println!("/{}\\", cage);
 
-    for i in 0..(quote.len() / line_width + 1) {
-        let mut start = i * line_width - offset;
-        let mut end = cmp::min((i + 1) * line_width, quote.len() - 1) - offset;
+    let mut offset  = 0;
+    let mut i       = 0;
+
+    let mut end     = 0;
+    let mut start;
+    while end < quote.len() {
+        start = i * line_width - offset;
+        end = cmp::min((i + 1) * line_width - offset, quote.len());
         let mut pad = String::from("");
         while end < quote.len()
             && end > 0
@@ -46,11 +50,12 @@ fn print_box(quote: String, line_width: usize) {
             start += 1;
         }
         if end - start < line_width {
-            let n_repeat = start + line_width - end + 1;
+            let n_repeat = start + line_width - end;
             pad = String::from(" ").repeat(n_repeat);
         }
         let sub_quote = &quote[start..end];
         println!("| {}{} |", sub_quote, pad);
+        i += 1;
     }
 
     println!("\\{}/", cage);
